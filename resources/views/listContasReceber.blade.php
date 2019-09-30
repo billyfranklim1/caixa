@@ -8,66 +8,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <meta name="csrf-token" id="csrf-token" content="{{ csrf_token() }}">
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/locale/ar-dz.js" integrity="sha256-0g3Mo0RV+oP01aeOzrXsuh3JH4xrPUoBOvDgzanztPg=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/locale/af.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/moment.js"></script>
 
     <title>Caixa - Cadastro Fluxo</title>
 
-    <!-- Fonts -->
-    <!-- <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet"> -->
-
-    <!-- Styles -->
-    <!-- <style>
-    html, body {
-    background-color: #fff;
-    color: #636b6f;
-    font-family: 'Nunito', sans-serif;
-    font-weight: 200;
-    height: 100vh;
-    margin: 0;
-}
-
-.full-height {
-height: 100vh;
-}
-
-.flex-center {
-align-items: center;
-display: flex;
-justify-content: center;
-}
-
-.position-ref {
-position: relative;
-}
-
-.top-right {
-position: absolute;
-right: 10px;
-top: 18px;
-}
-
-.content {
-text-align: center;
-}
-
-.title {
-font-size: 84px;
-}
-
-.links > a {
-color: #636b6f;
-padding: 0 25px;
-font-size: 13px;
-font-weight: 600;
-letter-spacing: .1rem;
-text-decoration: none;
-text-transform: uppercase;
-}
-
-.m-b-md {
-margin-bottom: 30px;
-}
-</style> -->
 </head>
 <body>
     <div id="ContasPagar" class="container" style="margin-top: 30px">
@@ -114,8 +60,8 @@ margin-bottom: 30px;
                                 <td>@{{i.descricao}}</td>
                                 <td>R$ @{{i.valor_contas_receber}}</td>
 
-                                <td>@{{i.prazo}}</td>
-                                <td v-if="i.data_pagamento">@{{i.data_pagamento}}</td>
+                                <td>@{{i.prazo | formataData}}</td>
+                                <td v-if="i.data_pagamento">@{{i.data_pagamento  | formataData}}</td>
                                 <td v-if="!i.data_pagamento"> | | </td>
 
                                 <td><button v-bind:disabled="(i.data_pagamento)" type="button" class="btn btn-primary" data-toggle="modal" v-on:click="getContasReceber(i.id_contas_receber)" data-target="#modalExemplo">Baixa</button></td>
@@ -196,6 +142,14 @@ var app = new Vue({
                 alert("Selecione uma data!!")
             }
 
+        }
+    },
+    filters : {
+        formataData: function (value) {
+            if (value) {
+                return moment(String(value)).format('L');
+            }
+            return "";
         }
     },
     created : function() {

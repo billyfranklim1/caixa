@@ -8,7 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <meta name="csrf-token" id="csrf-token" content="{{ csrf_token() }}">
-
+<script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/moment.js"></script>
 
     <title>Caixa - Cadastro Fluxo</title>
 
@@ -55,8 +55,8 @@
                                 <td>@{{i.fornecedor}}</td>
                                 <td>@{{i.descricao}}</td>
                                 <td>R$ @{{i.valor_contas_pagar}}</td>
-                                <td>@{{i.vencimento}}</td>
-                                <td v-if="i.data_pagamento">@{{i.data_pagamento}}</td>
+                                <td>@{{i.vencimento | formataData}}</td>
+                                <td v-if="i.data_pagamento">@{{i.data_pagamento | formataData}}</td>
                                 <td v-if="!i.data_pagamento"> | | </td>
                                 <td><button v-bind:disabled="(i.data_pagamento)"  type="button" class="btn btn-primary" data-toggle="modal" v-on:click="getContasPagar(i.id_contas_pagar)" data-target="#modalExemplo">Baixa</button></td>
 
