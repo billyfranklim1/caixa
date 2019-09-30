@@ -10,68 +10,11 @@
 
 
     <title>Caixa - Cadastro Fluxo</title>
-
-    <!-- Fonts -->
-    <!-- <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet"> -->
-
-    <!-- Styles -->
-    <!-- <style>
-    html, body {
-    background-color: #fff;
-    color: #636b6f;
-    font-family: 'Nunito', sans-serif;
-    font-weight: 200;
-    height: 100vh;
-    margin: 0;
-}
-
-.full-height {
-height: 100vh;
-}
-
-.flex-center {
-align-items: center;
-display: flex;
-justify-content: center;
-}
-
-.position-ref {
-position: relative;
-}
-
-.top-right {
-position: absolute;
-right: 10px;
-top: 18px;
-}
-
-.content {
-text-align: center;
-}
-
-.title {
-font-size: 84px;
-}
-
-.links > a {
-color: #636b6f;
-padding: 0 25px;
-font-size: 13px;
-font-weight: 600;
-letter-spacing: .1rem;
-text-decoration: none;
-text-transform: uppercase;
-}
-
-.m-b-md {
-margin-bottom: 30px;
-}
-</style> -->
 </head>
-<body>
-    <div class="container" style="margin-top: 30px">
+<body >
+    <div id="ContasPagar"class="container" style="margin-top: 30px">
         <div class="card">
-            <h5 class="card-header">Cadastro Contas a Pagar  <a href="/">Home</a></h5>
+            <h5 class="card-header">Cadastro Despesas <a href="/">Home</a></h5>
             <div class="card-body">
                 <fieldset align="center" class="form-group position-relative has-icon-left mb-1">
                     @if(session()->get('sucessocontaspagar'))
@@ -92,13 +35,13 @@ margin-bottom: 30px;
                     <div class="form-group row">
                         <label for="inputEmail3" class="col-sm-2 col-form-label">Fornecedor</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" name="fornecedor" placeholder="Fornecedor">
+                            <input required type="text" class="form-control" name="fornecedor" placeholder="Fornecedor">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="inputEmail3" class="col-sm-2 col-form-label">Serviço/Produto</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" name="descricao" placeholder="Descrição Serviço/Produto">
+                            <input required type="text" class="form-control" name="descricao" placeholder="Descrição Serviço/Produto">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -108,19 +51,50 @@ margin-bottom: 30px;
                               <div class="input-group-prepend">
                                 <div class="input-group-text">R$</div>
                               </div>
-                              <input type="text" class="form-control" name="valor" placeholder="Valor"  onKeyPress="return(moeda(this,'.',',',event))">
+                              <input required type="text" class="form-control" name="valor" placeholder="Valor"  onKeyPress="return(moeda(this,'.',',',event))">
                             </div>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="inputPassword3" class="col-sm-2 col-form-label">Vencimento</label>
                         <div class="col-sm-10">
-                            <input type="date"  class="form-control" name="vencimento" >
+                            <input required type="date"  class="form-control" name="vencimento" >
                         </div>
                     </div>
 
                     <div class="form-group row">
+                        <label for="inputPassword3" class="col-sm-2 col-form-label">Situação</label>
+                        <div class="col-sm-10">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" v-model="situacao" name="situacao" id="opcao1" value="1">
+                                <label class="form-check-label" for="opcao1">
+                                    Pago
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" v-model="situacao" name="situacao" id="opcao2" value="0" checked>
+                                <label class="form-check-label" for="opcao2">
+                                    A Pagar
+                                </label>
+                            </div>
+                        </div>
+
                     </div>
+                    <!-- <div   v-if="situacao == 1" class="form-group row">
+                        <label for="inputPassword3" class="col-sm-2 col-form-label">Vencimento</label>
+                        <div class="col-sm-10">
+                            <input type="date"  class="form-control" name="vencimento" >
+                        </div>
+                    </div> -->
+
+                    <div  v-if="situacao == 1" class="form-group row">
+                        <label for="inputPassword3" class="col-sm-2 col-form-label">Data de Pagamento</label>
+                        <div class="col-sm-10">
+                            <input type="date"  class="form-control" name="data_pagamento">
+                        </div>
+
+                    </div>
+
 
                     <!-- <div class="form-group row">
                         <div class="col-sm-2">Checkbox</div>
@@ -143,6 +117,35 @@ margin-bottom: 30px;
         </div>
 
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+
+    <!-- perguntas:<=json_encode($perguntas) ?> -->
+    <!-- csrf-token -->
+
+    <script type="text/javascript">
+    Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#csrf-token').getAttribute('content');
+    var app = new Vue({
+        el: '#ContasPagar',
+        data: {
+            situacao:'0',
+        },
+        methods: {
+
+        },
+        filters : {
+            formataData: function (value) {
+                if (value) {
+                    return moment(String(value)).format('L');
+                }
+                return "";
+            }
+        },
+        created : function() {
+        }
+    }
+)
+</script>
 </body>
 <script language="javascript">
 function moeda(a, e, r, t) {

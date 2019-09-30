@@ -19,6 +19,12 @@ class ContasReceberController extends BaseController
             $novaContasReceber = new ContasReceber();
             $novaContasReceber['descricao']             = $request['descricao'];
             $novaContasReceber['cliente']               = $request['cliente'];
+            $novaContasReceber['situacao']               = $request['situacao'];
+            if($request['situacao'] == 1){
+                $novaContasReceber['data_pagamento'] = $request['data_pagamento'];
+
+            }
+
             $novaContasReceber['valor_contas_receber']  = str_replace($source, $replace, $request['valor']);
             $novaContasReceber['prazo']                 = $request['prazo'];
             $novaContasReceber->save();
@@ -49,7 +55,7 @@ class ContasReceberController extends BaseController
         $contaReceber['situacao'] = 1;
         $contaReceber->save();
 
-        $contaReceber = ContasReceber::get();
+        $contaReceber = ContasReceber::orderBy('id_contas_receber', 'desc')->get();
         return $contaReceber;
 
     }

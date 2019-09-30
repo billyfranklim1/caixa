@@ -18,10 +18,16 @@ class ContasPagarController extends BaseController
             $replace = array('', '.');
 // $valor = str_replace($source, $replace, $get_valor); //remove os pontos e substitui a virgula pelo ponto
             $novaContaPagar = new ContasPagar();
-            $novaContaPagar['descricao']                 = $request['descricao'];
-            $novaContaPagar['fornecedor']                 = $request['fornecedor'];
-            $novaContaPagar['valor_contas_pagar']     = str_replace($source, $replace, $request['valor']);
-            $novaContaPagar['vencimento']                     = $request['vencimento'];
+            $novaContaPagar['descricao']  = $request['descricao'];
+            $novaContaPagar['fornecedor'] = $request['fornecedor'];
+
+            $novaContaPagar['situacao']   = $request['situacao'];
+            if($request['situacao'] == 1){
+                $novaContaPagar['data_pagamento'] = $request['data_pagamento'];
+            }
+            $novaContaPagar['vencimento'] = $request['vencimento'];
+            $novaContaPagar['valor_contas_pagar'] = str_replace($source, $replace, $request['valor']);
+
             $novaContaPagar->save();
             return redirect("/cadContasPagar")->with('sucessocontaspagar', "Sucesso !!");
 
@@ -48,7 +54,7 @@ class ContasPagarController extends BaseController
         $contaPagar['situacao'] = 1;
         $contaPagar->save();
 
-        $contaPagar = ContasPagar::get();
+        $contaPagar =  ContasPagar::orderBy('id_contas_pagar', 'desc')->get();
         return $contaPagar;
 
     }

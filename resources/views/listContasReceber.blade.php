@@ -118,7 +118,6 @@ margin-bottom: 30px;
                                 <td v-if="i.data_pagamento">@{{i.data_pagamento}}</td>
                                 <td v-if="!i.data_pagamento"> | | </td>
 
-                                <td><button type="button" class="btn btn-primary">Editar</button></td>
                                 <td><button v-bind:disabled="(i.data_pagamento)" type="button" class="btn btn-primary" data-toggle="modal" v-on:click="getContasReceber(i.id_contas_receber)" data-target="#modalExemplo">Baixa</button></td>
 
                             </tr>
@@ -179,24 +178,28 @@ var app = new Vue({
             this.$http.get(url)
                 .then((response) => {
                     this.resposta = response.body;
-                    console.log(this.resposta);
+                    // console.log(this.resposta);
                 });
             this.vermodal = true;
         },
         baixaContaReceber : function (id){
-            url = this.urlBase+"/baixaContaReceber";
-            this.$http.post(url, {id: id, data_pagamento:this.data_pagamento})
-            .then( response => {
-                this.lista = response.body;
-            }).catch((err)=>{
-                this.response = err;
-            })
-            this.vermodal = false;
+            if(this.data_pagamento){
+                url = this.urlBase+"/baixaContaReceber";
+                this.$http.post(url, {id: id, data_pagamento:this.data_pagamento})
+                .then( response => {
+                    this.lista = response.body;
+                }).catch((err)=>{
+                    this.response = err;
+                })
+                this.vermodal = false;
+            }else {
+                alert("Selecione uma data!!")
+            }
 
         }
     },
     created : function() {
-        console.log(this.lista);
+        // console.log(this.lista);
     }
 }
 )

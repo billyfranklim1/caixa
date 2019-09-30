@@ -58,7 +58,6 @@
                                 <td>@{{i.vencimento}}</td>
                                 <td v-if="i.data_pagamento">@{{i.data_pagamento}}</td>
                                 <td v-if="!i.data_pagamento"> | | </td>
-                                <td><button type="button" class="btn btn-primary">Editar</button></td>
                                 <td><button v-bind:disabled="(i.data_pagamento)"  type="button" class="btn btn-primary" data-toggle="modal" v-on:click="getContasPagar(i.id_contas_pagar)" data-target="#modalExemplo">Baixa</button></td>
 
                             </tr>
@@ -84,7 +83,7 @@
                         <div class="form-group row">
                             <label for="inputPassword3" class="col-sm-6 col-form-label">Data de Pagamento</label>
                             <div class="col-sm-6">
-                                <input type="date"  class="form-control" name="vencimento" v-model="data_pagamento">
+                                <input type="date"  class="form-control" name="vencimento" v-model="data_pagamento" required>
                             </div>
                         </div>
                     </div>
@@ -119,19 +118,24 @@
                 this.$http.get(url)
                 .then((response) => {
                     this.resposta = response.body;
-                    console.log(this.resposta);
+                    // console.log(this.resposta);
                 });
                 this.vermodal = true;
             },
             baixaContaPagar : function (id){
-                url = this.urlBase+"/baixaContaPagar";
-                this.$http.post(url, {id: id, data_pagamento:this.data_pagamento})
-                .then( response => {
-                    this.lista = response.body;
-                }).catch((err)=>{
-                    this.response = err;
-                })
-                this.vermodal = false;
+                // console.log(this.data_pagamento);
+                if(this.data_pagamento){
+                    url = this.urlBase+"/baixaContaPagar";
+                    this.$http.post(url, {id: id, data_pagamento:this.data_pagamento})
+                    .then( response => {
+                        this.lista = response.body;
+                    }).catch((err)=>{
+                        this.response = err;
+                    })
+                    this.vermodal = false;
+                }else {
+                    alert("Selecione uma data!!")
+                }
 
             }
         },

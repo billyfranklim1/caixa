@@ -69,7 +69,7 @@ margin-bottom: 30px;
 </style> -->
 </head>
 <body>
-    <div class="container" style="margin-top: 30px">
+    <div  id="ContasReceber" class="container" style="margin-top: 30px">
         <div class="card">
             <h5 class="card-header">Cadastro Contas a Receber <a href="/">Home</a> </h5>
             <div class="card-body">
@@ -118,21 +118,32 @@ margin-bottom: 30px;
                             <input type="date"  class="form-control" name="prazo" >
                         </div>
                     </div>
-
                     <div class="form-group row">
-                    </div>
-
-                    <!-- <div class="form-group row">
-                        <div class="col-sm-2">Checkbox</div>
+                        <label for="inputPassword3" class="col-sm-2 col-form-label">Situação</label>
                         <div class="col-sm-10">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="gridCheck1">
-                                <label class="form-check-label" for="gridCheck1">
-                                    Checkbox exemplo
+                                <input class="form-check-input" type="radio" v-model="situacao" name="situacao" id="opcao1" value="1">
+                                <label class="form-check-label" for="opcao1">
+                                    Pago
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" v-model="situacao" name="situacao" id="opcao2" value="0">
+                                <label class="form-check-label" for="opcao2">
+                                    Aberto
                                 </label>
                             </div>
                         </div>
-                    </div> -->
+
+                    </div>
+
+                    <div  v-if="situacao == 1" class="form-group row">
+                        <label for="inputPassword3" class="col-sm-2 col-form-label">Data de Pagamento</label>
+                        <div class="col-sm-10">
+                            <input type="date"  class="form-control" name="data_pagamento">
+                        </div>
+
+                    </div>
                     <div class="form-group row">
                         <div class="col-sm-10">
                             <button type="submit" class="btn btn-primary">Cadastrar</button>
@@ -141,45 +152,74 @@ margin-bottom: 30px;
                 </form>
             </div>
         </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
 
-    </div>
-</body>
-<script language="javascript">
-function moeda(a, e, r, t) {
-    let n = ""
-      , h = j = 0
-      , u = tamanho2 = 0
-      , l = ajd2 = ""
-      , o = window.Event ? t.which : t.keyCode;
-    if (13 == o || 8 == o)
-        return !0;
-    if (n = String.fromCharCode(o),
-    -1 == "0123456789".indexOf(n))
-        return !1;
-    for (u = a.value.length,
-    h = 0; h < u && ("0" == a.value.charAt(h) || a.value.charAt(h) == r); h++)
-        ;
-    for (l = ""; h < u; h++)
-        -1 != "0123456789".indexOf(a.value.charAt(h)) && (l += a.value.charAt(h));
-    if (l += n,
-    0 == (u = l.length) && (a.value = ""),
-    1 == u && (a.value = "0" + r + "0" + l),
-    2 == u && (a.value = "0" + r + l),
-    u > 2) {
-        for (ajd2 = "",
-        j = 0,
-        h = u - 3; h >= 0; h--)
-            3 == j && (ajd2 += e,
-            j = 0),
-            ajd2 += l.charAt(h),
-            j++;
-        for (a.value = "",
-        tamanho2 = ajd2.length,
-        h = tamanho2 - 1; h >= 0; h--)
-            a.value += ajd2.charAt(h);
-        a.value += r + l.substr(u - 2, u)
-    }
-    return !1
-}
- </script>
+        <!-- perguntas:<=json_encode($perguntas) ?> -->
+        <!-- csrf-token -->
+
+        <script type="text/javascript">
+        Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#csrf-token').getAttribute('content');
+        var app = new Vue({
+            el: '#ContasReceber',
+            data: {
+                situacao:'0',
+            },
+            methods: {
+
+            },
+            filters : {
+                formataData: function (value) {
+                    if (value) {
+                        return moment(String(value)).format('L');
+                    }
+                    return "";
+                }
+            },
+            created : function() {
+            }
+        }
+        )
+        </script>
+        <script language="javascript">
+        function moeda(a, e, r, t) {
+            let n = ""
+              , h = j = 0
+              , u = tamanho2 = 0
+              , l = ajd2 = ""
+              , o = window.Event ? t.which : t.keyCode;
+            if (13 == o || 8 == o)
+                return !0;
+            if (n = String.fromCharCode(o),
+            -1 == "0123456789".indexOf(n))
+                return !1;
+            for (u = a.value.length,
+            h = 0; h < u && ("0" == a.value.charAt(h) || a.value.charAt(h) == r); h++)
+                ;
+            for (l = ""; h < u; h++)
+                -1 != "0123456789".indexOf(a.value.charAt(h)) && (l += a.value.charAt(h));
+            if (l += n,
+            0 == (u = l.length) && (a.value = ""),
+            1 == u && (a.value = "0" + r + "0" + l),
+            2 == u && (a.value = "0" + r + l),
+            u > 2) {
+                for (ajd2 = "",
+                j = 0,
+                h = u - 3; h >= 0; h--)
+                    3 == j && (ajd2 += e,
+                    j = 0),
+                    ajd2 += l.charAt(h),
+                    j++;
+                for (a.value = "",
+                tamanho2 = ajd2.length,
+                h = tamanho2 - 1; h >= 0; h--)
+                    a.value += ajd2.charAt(h);
+                a.value += r + l.substr(u - 2, u)
+            }
+            return !1
+        }
+         </script>
+
+
 </html>

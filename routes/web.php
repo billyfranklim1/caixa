@@ -12,7 +12,6 @@
 */
 use App\ContasPagar;
 use App\ContasReceber;
-use App\FluxoCaixa;
 use Money\Currency;
 use Money\Money;
 
@@ -57,20 +56,16 @@ Route::get('/', function () {
     return view('welcome',compact('total','total2','saldo'));
 });
 
-Route::get('/cadFluxo', function () {return view('cadFluxo');});
 Route::get('/cadContasReceber', function () {return view('cadContasReceber');});
 Route::get('/cadContasPagar', function () {return view('cadContasPagar');});
 
-Route::get('/listFluxo', function () {
-    $lista = FluxoCaixa::get();
-    return view('listFluxo',compact('lista'));
-});
+
 Route::get('/listContasReceber', function () {
-    $lista = ContasReceber::get();
+    $lista = ContasReceber::orderBy('id_contas_receber', 'desc')->get();
     return view('listContasReceber',compact('lista'));
 });
 Route::get('/listContasPagar', function () {
-    $lista = ContasPagar::get();
+    $lista = ContasPagar::orderBy('id_contas_pagar', 'desc')->get();
     return view('listContasPagar',compact('lista'));
 });
 
@@ -81,10 +76,8 @@ Route::post('/baixaContaReceber','ContasReceberController@baixaContaReceber');
 
 
 
-Route::post('/fluxo','FluxoController@salvar');
 Route::post('/receber','ContasReceberController@salvar');
 Route::post('/pagar','ContasPagarController@salvar');
 
-Route::get('/fluxo/{id?}','FluxoController@listar');
 Route::get('/receber/{id?}','ContasReceberController@listar');
 Route::get('/pagar/{id?}','ContasPagarController@listar');
